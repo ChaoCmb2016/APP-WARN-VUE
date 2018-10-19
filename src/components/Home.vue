@@ -26,7 +26,7 @@ export default {
     };
   },
   created: function() {
-    this.getData(); //这里定义这个方法，vue实例之后运行到这里就调用这个函数
+    this.getData("80374724"); //这里定义这个方法，vue实例之后运行到这里就调用这个函数
   },
 
   mounted: function() {
@@ -45,15 +45,24 @@ export default {
     window.removeEventListener("scroll", this.handleScroll);
   },
   methods: {
-    getData() {
+    getData(userid) {
       var _this = this;
-      fetch(`/jsondata`, { method: "GET" })
+       var opts = {
+        method:"POST",   //请求方法
+        // body:"userid="+userid,   //请求体
+        body:"userid="+userid,
+
+    headers: {'Content-Type': 'application/x-www-form-urlencoded' }
+ 　　　
+
+    };
+      fetch(`/jsondata`, opts)
         .then(res => res.json())
         .then(function(data) {
           (_this.sysnodes = data.sysnodes),
             (_this.tmpsysnodes = data.tmpsysnodes);
         });
-    },
+},
     addsysnodes: function() {
       alert("待后续开发！");
     },
@@ -63,7 +72,7 @@ export default {
       hammer.get("swipe").set({ threshold: 100 });
       hammer.on("swiperight", e => {
         window.scrollTo(0,0);
-        this.getData();
+        this.getData("80374724");
       });
     },
     handleScroll: function() {

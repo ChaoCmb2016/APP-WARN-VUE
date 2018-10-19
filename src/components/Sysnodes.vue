@@ -33,7 +33,7 @@ export default {
   methods: {
     stepIntoDetail: function(sysIndex) {
       console.log(sysIndex);
-      this.router.push({
+      this.$router.push({
         name: "Detail",
         params : {
           sysname: this.sysnodes[sysIndex].name,

@@ -16,7 +16,13 @@ router.get('/json', async (ctx, next) => {
   }
 })
 
-router.get('/jsondata', async (ctx, next) => {
+router.post('/jsondata', async (ctx, next) => {
+  var params=[];
+  params[0]=ctx.request.body.userid;
+  console.log(ctx.request.body);
+  console.log(params[0]);
+  // //console.log(JSON.stringify(params));
+  // neo4j_node_deal.insertQueryFun(params);
   var sysnodes=[
     {
       id: 1, name: "管舱基础客群获客管理", state: "延迟12分钟", rate_of_progress: "50",
