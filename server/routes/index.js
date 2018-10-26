@@ -1,5 +1,5 @@
 const router = require('koa-router')()
-const getUserFocusSysInformation=require("../public/javascripts/neo4j_node_deal")
+const neo4j_node_deal=require("../public/javascripts/neo4j_node_deal")
 
 
 router.get('/', async (ctx, next) => {
@@ -21,89 +21,15 @@ router.get('/json', async (ctx, next) => {
 router.post('/jsondata', async (ctx, next) => {
   var params=[];
   params[0]=ctx.request.body.userid;
-  getUserFocusSysInformation(params[0]);
   // //console.log(JSON.stringify(params));
   // neo4j_node_deal.insertQueryFun(params);
-  var sysnodes=[
-    {
-      id: 1, name: "管舱基础客群获客管理", state: "延迟12分钟", rate_of_progress: "50",
-      threshold: "08:00", average: "03:25", hot: "15"
-    },
-    {
-      id: 2, name: "智慧营销", state: "正常", rate_of_progress: "30",
-      threshold: "08:00", average: "03:25", hot: "15"
-    },
-    {
-      id: 3, name: "管舱基础客群获客管理", state: "延迟12分钟", rate_of_progress: "50",
-      threshold: "08:00", average: "03:25", hot: "15"
-    },
-    {
-      id: 4, name: "智慧营销", state: "正常", rate_of_progress: "30",
-      threshold: "08:00", average: "03:25", hot: "15"
-    },
-    {
-      id: 5, name: "管舱基础客群获客管理", state: "延迟12分钟", rate_of_progress: "50",
-      threshold: "08:00", average: "03:25", hot: "15"
-    },
-    {
-      id: 6, name: "智慧营销", state: "正常", rate_of_progress: "30",
-      threshold: "08:00", average: "03:25", hot: "15"
-    },
-    {
-      id: 7, name: "管舱基础客群获客管理", state: "延迟12分钟", rate_of_progress: "50",
-      threshold: "08:00", average: "03:25", hot: "15"
-    },
-    {
-      id: 8, name: "智慧营销", state: "正常", rate_of_progress: "30",
-      threshold: "08:00", average: "03:25", hot: "15"
-    },
-    {
-      id: 9, name: "管舱基础客群获客管理", state: "延迟12分钟", rate_of_progress: "50",
-      threshold: "08:00", average: "03:25", hot: "15"
-    },
-    {
-      id: 10, name: "智慧营销", state: "正常", rate_of_progress: "30",
-      threshold: "08:00", average: "03:25", hot: "15"
-    },
-    {
-      id: 11, name: "管舱基础客群获客管理", state: "延迟12分钟", rate_of_progress: "50",
-      threshold: "08:00", average: "03:25", hot: "15"
-    },
-    {
-      id: 12, name: "智慧营销", state: "正常", rate_of_progress: "30",
-      threshold: "08:00", average: "03:25", hot: "15"
-    },
-    {
-      id: 13, name: "管舱基础客群获客管理", state: "延迟12分钟", rate_of_progress: "50",
-      threshold: "08:00", average: "03:25", hot: "15"
-    },
-    {
-      id: 14, name: "智慧营销", state: "正常", rate_of_progress: "30",
-      threshold: "08:00", average: "03:25", hot: "15"
-    },
-    {
-      id: 15, name: "管舱基础客群获客管理", state: "延迟12分钟", rate_of_progress: "50",
-      threshold: "08:00", average: "03:25", hot: "15"
-    },
-    {
-      id: 16, name: "智慧营销", state: "正常", rate_of_progress: "30",
-      threshold: "08:00", average: "03:25", hot: "15"
-    },
-    {
-      id: 17, name: "管舱基础客群获客管理", state: "延迟12分钟", rate_of_progress: "50",
-      threshold: "08:00", average: "03:25", hot: "15"
-    },
-    {
-      id: 18, name: "智慧营销", state: "正常", rate_of_progress: "30",
-      threshold: "08:00", average: "03:25", hot: "15"
-    }
-  ];
-  var tmpsysnodes=sysnodes;
-  
-  ctx.body = {
-    sysnodes:sysnodes,
-  tmpsysnodes:tmpsysnodes}
-})
+  // var tmpsysnodes=sysnodes;
+  var data=neo4j_node_deal.getUserFocusSysInformation(params[0]);
+  data.then(data=>{
+    ctx.body=data
+  })
+
+});
 
 router.get('/jsondatadetail', async (ctx, next) => {
   var wrongjobs=[
