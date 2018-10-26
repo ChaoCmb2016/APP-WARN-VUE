@@ -8,7 +8,9 @@
       <i class="icon-search"></i>
       <input type="text" class="input-search" placeholder="关键字搜索" v-on:input='inputTestChanged' />
     </div>
+    <Loading v-if="flag"/>
     <Mysysnodes :sysnodes='sysnodes' />
+    
 
   </div>
 </template>
@@ -16,13 +18,15 @@
 <script>
 import Mysysnodes from "../components/Sysnodes";
 import Vue from "vue";
+import Loading from "../components/Loading"
 
 export default {
   data() {
     return {
       sysnodes: [],
       tmpsysnodes: [],
-      scroll: 0
+      scroll: 0,
+      flag:false,
     };
   },
   created: function() {
@@ -32,6 +36,7 @@ export default {
   mounted: function() {
     window.addEventListener("scroll", this.handleScroll);
     this.bindSwipeEvent();
+    _this.flag=false;
   },
 
   activated: function() {
@@ -53,11 +58,14 @@ export default {
         cache:"no-store",
         headers: { "Content-Type": "application/x-www-form-urlencoded" }
       };
+      _this.flag=true;
       fetch(`/jsondata`, opts)
         .then(res => res.json())
         .then(function(data) {
-          (_this.sysnodes = data.sysnodes),
+          setTimeout(function () {
+            (_this.sysnodes = data.sysnodes),
             (_this.tmpsysnodes = data.tmpsysnodes);
+           }, 2000)
         });
     },
     addsysnodes: function() {
@@ -89,7 +97,7 @@ export default {
       }
     }
   },
-  components: { Mysysnodes }
+  components: { Mysysnodes,Loading }
 };
 </script>
 

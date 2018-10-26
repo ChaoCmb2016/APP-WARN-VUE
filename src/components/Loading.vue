@@ -9,7 +9,7 @@
  *
  -->
 <template>
-    <div class='uil-default-css' style='transform:scale(0.3);' v-show="showLoading">
+    <div class='uil-default-css' style='transform:scale(0.3);'>
         <div style='top:80px;left:93px;width:14px;height:40px;background:#959199;-webkit-transform:rotate(0deg) translate(0,-60px);transform:rotate(0deg) translate(0,-60px);border-radius:10px;position:absolute;'></div>
         <div style='top:80px;left:93px;width:14px;height:40px;background:#959199;-webkit-transform:rotate(30deg) translate(0,-60px);transform:rotate(30deg) translate(0,-60px);border-radius:10px;position:absolute;'></div>
         <div style='top:80px;left:93px;width:14px;height:40px;background:#959199;-webkit-transform:rotate(60deg) translate(0,-60px);transform:rotate(60deg) translate(0,-60px);border-radius:10px;position:absolute;'></div>
@@ -27,11 +27,10 @@
  
 <script>
     export default {
-        props: ["showLoading"]
     }
 </script>
  
-<style lang="sass" rel="stylesheet/scss">
+<style lang="scss" rel="stylesheet/scss">
     @-webkit-keyframes uil-default-anim {
         0% {
             opacity: 1
