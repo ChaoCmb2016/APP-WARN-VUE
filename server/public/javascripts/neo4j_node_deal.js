@@ -63,8 +63,13 @@ function deleteQueryFun(params) {
   var getUserFocusSysQuery =
     "match(n:USER{emp_id:{userid}})-[r:USER_TO_WRNPOINT]->(n1:WRN_POINT)\
     return n1.ear_warn_point_id as name";
-  var session = driver.session();
-  session
+  var sysInformationQuery = "RETURN cmb.findNodes(\"WRN_POINT\",\"ear_warn_point_id\",{ear_warn_point_id},\
+    \"JOB_TO_JOB\",\"WRNPOINT_TO_JOB\") as name";
+
+  return new Promise((resolve,reject)=>{
+
+    var session = driver.session();
+    session
     .run(getUserFocusSysQuery, { userid: userid })
     .then(function (result) {
       // result.records.forEach(function (record) {
@@ -72,9 +77,7 @@ function deleteQueryFun(params) {
       // });
       async.map(result.records, function (record, callback) {
         var ear_warn_point_id = record.get('name').low;
-        var sysInformationQuery = "RETURN cmb.findNodes(\"WRN_POINT\",\"ear_warn_point_id\",{ear_warn_point_id},\
-      \"JOB_TO_JOB\",\"WRNPOINT_TO_JOB\") as name";
-        var session = driver.session();
+        
         session
           .run(sysInformationQuery, { ear_warn_point_id: ear_warn_point_id })
           .subscribe({
@@ -82,7 +85,6 @@ function deleteQueryFun(params) {
               var sysInf = record.get('name');
               callback(null, sysInf)
             }, onCompleted: function () {
-              session.close();
             },
             onError: function (error) {
               console.log(error);
@@ -175,13 +177,15 @@ function deleteQueryFun(params) {
           sysnodes: sysnodes,
           tmpsysnodes: tmpsysnodes
         };
-        return data;
+         resolve(data);
       });
       session.close();
     })
     .catch(function (error) {
       console.log(error);
     });
+  })
+  
 }
 
 module.exports.insertQueryFun = insertQueryFun;

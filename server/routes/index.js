@@ -24,11 +24,7 @@ router.post('/jsondata', async (ctx, next) => {
   // //console.log(JSON.stringify(params));
   // neo4j_node_deal.insertQueryFun(params);
   // var tmpsysnodes=sysnodes;
-  var data=neo4j_node_deal.getUserFocusSysInformation(params[0]);
-  data.then(data=>{
-    ctx.body=data
-  })
-
+  ctx.body= await neo4j_node_deal.getUserFocusSysInformation(params[0]);
 });
 
 router.get('/jsondatadetail', async (ctx, next) => {

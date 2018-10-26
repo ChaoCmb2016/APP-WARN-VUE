@@ -32,7 +32,6 @@ export default {
   mounted: function() {
     window.addEventListener("scroll", this.handleScroll);
     this.bindSwipeEvent();
-
   },
 
   activated: function() {
@@ -47,22 +46,20 @@ export default {
   methods: {
     getData(userid) {
       var _this = this;
-       var opts = {
-        method:"POST",   //请求方法
+      var opts = {
+        method: "POST", //请求方法
         // body:"userid="+userid,   //请求体
-        body:"userid="+userid,
-
-    headers: {'Content-Type': 'application/x-www-form-urlencoded' }
- 　　　
-
-    };
+        body: "userid=" + userid,
+        cache:"no-store",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" }
+      };
       fetch(`/jsondata`, opts)
         .then(res => res.json())
         .then(function(data) {
           (_this.sysnodes = data.sysnodes),
             (_this.tmpsysnodes = data.tmpsysnodes);
         });
-},
+    },
     addsysnodes: function() {
       alert("待后续开发！");
     },
@@ -71,12 +68,13 @@ export default {
       var hammer = new Hammer(content);
       hammer.get("swipe").set({ threshold: 100 });
       hammer.on("swiperight", e => {
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
         this.getData("80374724");
       });
     },
     handleScroll: function() {
-      this.scroll = document.documentElement && document.documentElement.scrollTop;
+      this.scroll =
+        document.documentElement && document.documentElement.scrollTop;
     },
 
     inputTestChanged: function(event) {
