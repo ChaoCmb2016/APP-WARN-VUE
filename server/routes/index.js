@@ -1,4 +1,6 @@
 const router = require('koa-router')()
+const getUserFocusSysInformation=require("../public/javascripts/neo4j_node_deal")
+
 
 router.get('/', async (ctx, next) => {
   await ctx.render('index', {
@@ -19,8 +21,7 @@ router.get('/json', async (ctx, next) => {
 router.post('/jsondata', async (ctx, next) => {
   var params=[];
   params[0]=ctx.request.body.userid;
-  console.log(ctx.request.body);
-  console.log(params[0]);
+  getUserFocusSysInformation(params[0]);
   // //console.log(JSON.stringify(params));
   // neo4j_node_deal.insertQueryFun(params);
   var sysnodes=[
@@ -141,7 +142,6 @@ router.get('/jsondatadetail', async (ctx, next) => {
     delayjobs:delayjobs,
     otherjobs:otherjobs}
 })
-
 
 
 

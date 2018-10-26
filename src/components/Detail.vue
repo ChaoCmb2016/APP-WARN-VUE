@@ -45,7 +45,6 @@ export default {
         { id: 4, label: "报错作业", group: "wrongjob" },
         { id: 5, label: "正常作业", group: "otherjob" }
       ]);
-      console.log(nodes);
 
       // create an array with edges
       var edges = new vis.DataSet([
