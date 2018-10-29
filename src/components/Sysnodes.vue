@@ -3,10 +3,9 @@
         <div class="Sysnode"  v-for="(sysnode,index) in sysnodes" v-on:click='stepIntoDetail(index)' :key="sysnode.id">
             <span class="fontstyle">{{sysnode.name}}</span>
             <br />
-
             <span class="fontstyle">{{sysnode.state}}</span>
 
-            <span class="fontstyle right">进度{{sysnode.rate_of_progress}}%</span>
+            <span class="fontstyle right">进度25%</span>
             <br />
             <span>阈值|{{sysnode.threshold}}</span>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -29,6 +28,10 @@ export default {
     sysnodes: {
       type: Array
     }
+  },
+  mounted:function(){
+    // this.$store.commit("hideLoading");
+    // console.log(this.$store.state.LOADING);
   },
   methods: {
     stepIntoDetail: function(sysIndex) {

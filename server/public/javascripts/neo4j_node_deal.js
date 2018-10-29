@@ -91,7 +91,7 @@ function deleteQueryFun(params) {
             }
           });
       }, function (err, results) {
-        console.log(results);
+        // console.log(results);
         var sysnodes = [
           {
             id: 1, name: "管舱基础客群获客管理", state: "延迟12分钟", rate_of_progress: "50",

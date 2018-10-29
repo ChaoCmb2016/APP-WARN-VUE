@@ -8,7 +8,7 @@
       <i class="icon-search"></i>
       <input type="text" class="input-search" placeholder="关键字搜索" v-on:input='inputTestChanged' />
     </div>
-    <Loading v-if="flag"/>
+    <Loading v-if="flag" />
     <Mysysnodes :sysnodes='sysnodes' />
     
 
@@ -18,15 +18,14 @@
 <script>
 import Mysysnodes from "../components/Sysnodes";
 import Vue from "vue";
-import Loading from "../components/Loading"
+import Loading from "../components/Loading";
 
 export default {
   data() {
     return {
       sysnodes: [],
       tmpsysnodes: [],
-      scroll: 0,
-      flag:false,
+      scroll: 0
     };
   },
   created: function() {
@@ -36,7 +35,6 @@ export default {
   mounted: function() {
     window.addEventListener("scroll", this.handleScroll);
     this.bindSwipeEvent();
-    _this.flag=false;
   },
 
   activated: function() {
@@ -48,24 +46,31 @@ export default {
   deactivated: function() {
     window.removeEventListener("scroll", this.handleScroll);
   },
+  computed: {
+    flag: function() {
+      console.log(this.$store.state.LOADING);
+      return this.$store.state.LOADING;
+    },
+  },
   methods: {
+    
     getData(userid) {
+      console.log("刷新");
       var _this = this;
       var opts = {
         method: "POST", //请求方法
         // body:"userid="+userid,   //请求体
         body: "userid=" + userid,
-        cache:"no-store",
+        cache: "no-store",
         headers: { "Content-Type": "application/x-www-form-urlencoded" }
       };
-      _this.flag=true;
+      this.$store.commit("showLoading");
       fetch(`/jsondata`, opts)
         .then(res => res.json())
         .then(function(data) {
-          setTimeout(function () {
-            (_this.sysnodes = data.sysnodes),
+          (_this.sysnodes = data.sysnodes),
             (_this.tmpsysnodes = data.tmpsysnodes);
-           }, 2000)
+          _this.$store.commit("hideLoading");
         });
     },
     addsysnodes: function() {
@@ -97,7 +102,7 @@ export default {
       }
     }
   },
-  components: { Mysysnodes,Loading }
+  components: { Mysysnodes, Loading }
 };
 </script>
 
