@@ -4,6 +4,7 @@
       <h3 id="title">{{ $route.params.sysname }}</h3>
       <img id="more" src="../assets/more.png" alt="更多设置" v-on:click='otherset' />
     </div>
+    <!-- 前面添加一个标签，先渲染一个fonticon icon图标加载 -->
     <div id="mynetwork"></div>
   </div>
 </template>
@@ -11,11 +12,40 @@
 <script>
 import Hammer from "hammerjs";
 import vis from "vis";
-import image1 from '../assets/more.png'
+import user from '../assets/user1.png'
+import app from '../assets/app.png'
+import delay from '../assets/delay2.png'
+import error from '../assets/error1.png'
+import right from '../assets/right1.png'
+
 
 export default {
   data() {
-    return {};
+    return {
+      options : {
+        layout:{
+          hierarchical:true
+        },
+        nodes:{
+          size:40,
+          font:{
+              size:20,
+          }
+        },
+        edges: {
+          width:2,
+          arrowStrikethrough: true,
+          chosen: true,
+          color: {
+            color: "#848484",
+            highlight: "#848484",
+            hover: "#848484",
+            inherit: "from",
+            opacity: 1.0
+          }
+        },
+      }
+    };
   },
   methods: {
     otherset: function() {
@@ -29,29 +59,67 @@ export default {
         this.$router.back(-1);
       });
     },
-  },
-   computed:{
     drawJobStaMap: function() {
       var content = document.getElementById("mynetwork");
-      console.log(window.screen.availWidth, window.screen.availHeight * 0.4);
       content.style.height = window.screen.availHeight * 0.5 + "px";
       var sysname = this.$route.params.sysname;
 
       // create an array with nodes
       var nodes = new vis.DataSet([
-        { id: 1, label: "关注用户", group: "user" },
-        { id: 2, label: sysname, group: "sys" },
-        { id: 3, label: "延迟作业", group: "delayjob" },
-        { id: 4, label: "报错作业", group: "wrongjob" },
-        { id: 5, label: "正常作业", group: "otherjob" }
+        { id: 1, label: "",shape: "image", image:user,
+            // icon: {
+            //   face: "FontAwesome",
+            //   code: "\uf007",
+            //   size: 50,
+            //   color: "#3366ff"
+            // },
+            fixed:true },
+        { id: 2, label: sysname, shape: "image",image:app
+            // icon: {
+            //   face: "FontAwesome",
+            //   code: "\uf085",
+            //   size: 50,
+            //   color: "#222222"
+            // } 
+            },
+        { id: 3, label: "延迟作业",shape: "image",image:delay
+            // icon: {
+            //   face: "FontAwesome",
+            //   code: "\uf06a",
+            //   size: 50,
+            //   color: "orange"
+            // }
+             },
+        { id: 4, label: "报错作业",shape: "image",image:error
+            // icon: {
+            //   face: "FontAwesome",
+            //   code: "\uf05c",
+            //   size: 50,
+            //   color: "red"
+            // } 
+            },
+        { id: 5, label: "正常作业",shape: "image",image:right
+            // icon: {
+            //   face: "FontAwesome",
+            //   code: "\uf058",
+            //   size: 50,
+            //   color: "green"
+            // } 
+            }
       ]);
-
+    
       // create an array with edges
       var edges = new vis.DataSet([
-        { from: 1, to: 2 },
-        { from: 2, to: 3 },
-        { from: 2, to: 4 },
-        { from: 2, to: 5 }
+        { from: 1, to: 2,label:"25",font:{size:30,color:"red"},dashes:true,width:3},
+        { from: 2, to: 3,arrows: {
+            to: { enabled: true, scaleFactor: 1, type: "arrow" }
+          }},
+        { from: 2, to: 4,arrows: {
+            to: { enabled: true, scaleFactor: 1, type: "arrow" }
+          }},
+        { from: 2, to: 5,arrows: {
+            to: { enabled: true, scaleFactor: 1, type: "arrow" }
+          }}
       ]);
       var data = {
         nodes: nodes,
@@ -59,82 +127,16 @@ export default {
       }; 
 
       // these are all options in full.
-      var options = {
-        layout:{
-          randomSeed:5
-        },
-        edges: {
-          width:2,
-          arrows: {
-            to: { enabled: true, scaleFactor: 1, type: "arrow" }
-          },
-          arrowStrikethrough: true,
-          chosen: true,
-          color: {
-            color: "#848484",
-            highlight: "#848484",
-            hover: "#848484",
-            inherit: "from",
-            opacity: 1.0
-          }
-        },
-        groups: {
-          user: {
-            shape: "icon",
-            icon: {
-              face: "FontAwesome",
-              code: "\uf007",
-              size: 50,
-              color: "#222222"
-            },
-            fixed:true
-          },
-          sys: {
-            shape: "icon",
-            icon: {
-              face: "FontAwesome",
-              code: "\uf085",
-              size: 50,
-              color: "#222222"
-            }
-          },
-          delayjob: {
-            shape: "icon",
-            icon: {
-              face: "FontAwesome",
-              code: "\uf06a",
-              size: 50,
-              color: "orange"
-            }
-          },
-          wrongjob: {
-            shape: "icon",
-            icon: {
-              face: "FontAwesome",
-              code: "\uf05c",
-              size: 50,
-              color: "red"
-            }
-          },
-          otherjob: {
-            shape: "icon",
-            icon: {
-              face: "FontAwesome",
-              code: "\uf058",
-              size: 50,
-              color: "green"
-            }
-          }
-        }
-      };
       // initialize your network!
-      var network = new vis.Network(content, data, options);
+      var network = new vis.Network(content, data, this.options);
       return network;
     },
   },
+   computed:{
+  },
   mounted: function() {
-    this.drawJobStaMap.redraw();
     this.bindSwipeEvent();
+    this.drawJobStaMap();
   },
  
   components: {}
@@ -159,6 +161,6 @@ export default {
 }
 
 #mynetwork{
-  border:2px solid rgb(209, 204, 204)
+  border:2px solid rgb(204, 205, 209)
 }
 </style>

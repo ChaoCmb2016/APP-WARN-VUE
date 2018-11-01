@@ -62,7 +62,7 @@ function deleteQueryFun(params) {
  function getUserFocusSysInformation(userid) {
   var getUserFocusSysQuery =
     "match(n:USER{emp_id:{userid}})-[r:USER_TO_WRNPOINT]->(n1:WRN_POINT)\
-    return n1.ear_warn_point_id as name";
+    return n1.ear_warn_point_id as name,r.latest_finish_time as finish_time";
   var sysInformationQuery = "RETURN cmb.findNodes(\"WRN_POINT\",\"ear_warn_point_id\",{ear_warn_point_id},\
     \"JOB_TO_JOB\",\"WRNPOINT_TO_JOB\") as name";
 
@@ -73,9 +73,10 @@ function deleteQueryFun(params) {
     .run(getUserFocusSysQuery, { userid: userid })
     .then(function (result) {
       // result.records.forEach(function (record) {
-      //   console.log(record.get('name'));
+         
       // });
       async.map(result.records, function (record, callback) {
+        console.log(record.get('name'));
         var ear_warn_point_id = record.get('name').low;
         
         session
