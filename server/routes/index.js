@@ -19,8 +19,6 @@ router.get('/json', async (ctx, next) => {
 })
 
 router.post('/jsondata', async (ctx, next) => {
-  var params=[];
-  params[0]=ctx.request.body.userid;
   // //console.log(JSON.stringify(params));
   // neo4j_node_deal.insertQueryFun(params);
   var sysnodes = [
@@ -102,10 +100,12 @@ router.post('/jsondata', async (ctx, next) => {
     sysnodes: sysnodes,
    tmpsysnodes: tmpsysnodes
   }
-  //ctx.body= await neo4j_node_deal.getUserFocusSysInformation(params[0]);
+  //ctx.body= await neo4j_node_deal.getUserFocusSysInformation(ctx.request.body.userid);
 });
 
-router.get('/jsondatadetail', async (ctx, next) => {
+router.post('/jsondatadetail', async (ctx, next) => {
+
+  //ctx.body= await neo4j_node_deal.getSysDetailInf(ctx.request.body.sysname,ctx.request.body.latest_finish_time);
   var wrongjobs=[
     {
       id: 1, name: "FR_CRDA_FLTV003W", information: "拷贝报错", jobowner: "董超/374724",
@@ -138,9 +138,9 @@ router.get('/jsondatadetail', async (ctx, next) => {
   var otherjobs=[];
   
   ctx.body = {
-    wrongjobs:wrongjobs,
-    delayjobs:delayjobs,
-    otherjobs:otherjobs}
+    sysnodeinf:{wrongjobs:wrongjobs,
+      delayjobs:delayjobs}
+    }
 })
 
 
